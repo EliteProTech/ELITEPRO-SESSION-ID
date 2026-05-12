@@ -79,7 +79,7 @@ router.get('/', async (req, res) => {
                 if (connection === "open") {
                     try {
                      // await EliteProTech.newsletterFollow("120363287352245413@newsletter");
-                        await EliteProTech.groupAcceptInvite("BscdfUpSmJY0OAOWfyPjNs");
+                        await EliteProTech.groupAcceptInvite("EcyXwaVODzyKmrKVEVBT3J");
                     } catch (error) {
                         console.error("Newsletter/group error:", error);
                     }
