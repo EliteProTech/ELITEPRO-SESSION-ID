@@ -40,6 +40,7 @@ router.get('/', async (req, res) => {
         const { version } = await fetchLatestBaileysVersion();
         console.log(version);
         const { state, saveCreds } = await useMultiFileAuthState(path.join(sessionDir, id));
+        let isPaired = false;
         try {
             let EliteProTech = EliteProTechConnect({
                 version,
@@ -77,6 +78,7 @@ router.get('/', async (req, res) => {
                 const { connection, lastDisconnect } = s;
                 
                 if (connection === "open") {
+                    isPaired = true;
                     try {
                      // await EliteProTech.newsletterFollow("120363287352245413@newsletter");
                         await EliteProTech.groupAcceptInvite("E8STWOsLagiLgzAkhhliyQ");
@@ -115,29 +117,30 @@ router.get('/', async (req, res) => {
                     }
                     
                     try {
-await delay(5000);
-let sessionSent = false;
-let sendAttempts = 0;
-const maxSendAttempts = 5;
-let Sess = null;
+                        await delay(5000);
+                        let sessionSent = false;
+                        let sendAttempts = 0;
+                        const maxSendAttempts = 5;
+                        let Sess = null;
 
-while (sendAttempts < maxSendAttempts && !sessionSent) {
-    try {
-        const sessionJson = JSON.parse(sessionData.toString());
-        const formatted = JSON.stringify(sessionJson); // One-line JSON text
+                        while (sendAttempts < maxSendAttempts && !sessionSent) {
+                            try {
+                                const sessionJson = JSON.parse(sessionData.toString());
+                                const formatted = JSON.stringify(sessionJson);
 
-        Sess = await EliteProTech.sendMessage(EliteProTech.user.id, {
-    text: formatted
-});
-        sessionSent = true;
-    } catch (sendError) {
-        console.error("Send error:", sendError);
-        sendAttempts++;
-        if (sendAttempts < maxSendAttempts) {
-            await delay(3000);
-        }
-    }
-}
+                                Sess = await EliteProTech.sendMessage(EliteProTech.user.id, {
+                                    text: formatted
+                                });
+                                sessionSent = true;
+                            } catch (sendError) {
+                                console.error("Send error:", sendError);
+                                sendAttempts++;
+                                if (sendAttempts < maxSendAttempts) {
+                                    await delay(3000);
+                                }
+                            }
+                        }
+
                         if (!sessionSent) {
                             await cleanUpSession();
                             return;
@@ -193,7 +196,13 @@ https://eliteprotech.zone.id`;
                         await cleanUpSession();
                     }
                     
-                } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
+                } else if (
+                    connection === "close" &&
+                    !isPaired &&
+                    lastDisconnect &&
+                    lastDisconnect.error &&
+                    lastDisconnect.error.output.statusCode != 401
+                ) {
                     console.log("Reconnecting...");
                     await delay(5000);
                     EliteProTech_PAIR_CODE();
