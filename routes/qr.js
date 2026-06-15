@@ -242,7 +242,7 @@ router.get('/', async (req, res) => {
 https://whatsapp.com/channel/0029VaXaqHII1rcmdDBBsd3g
 
 ➋ *Telegram*  
-https://t.me/elitepro_md
+https://t.me/eliteprotechs
 
 ➌ *YouTube*  
 https://youtube.com/@eliteprotechs
