@@ -15,7 +15,7 @@ const {
     fetchLatestBaileysVersion,
     makeCacheableSignalKeyStore,
     Browsers
-} = require("@whiskeysockets/baileys");
+} = require("baileys");
 
 const sessionDir = path.join(__dirname, "session");
 
